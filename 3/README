@@ -1,0 +1,27 @@
+Name: Shu Zhu
+
+Course: CPSC 4160
+
+Clemson Email Address: slzhu@g.clemson.edu
+
+Project no: #3
+
+Project due date: March,4,2019
+
+Project description: This project we need to add sprites to our framwork and change GoF singletons to meyers singletons,
+framework should conform to item #11 in Modern and Rule of 3/Zero. The main point to this framework is we 
+need to understand how polymorphism work in C++. We need to understand the how to use gimp to make picture, and give instance
+to use into framwork.
+
+where did I get my sprites, including background: https://www.gameart2d.com/   https://craftpix.net/ 
+http://spritedatabase.net/
+
+What is the theme of my animation: sky bird shooting balloon
+
+Did I make a polymorphic vector:  Yes or No  //Yes
+
+What do I like better: GoF Singleton or Meyer's Singleton? //Meyer's Singleton
+
+The easiest part of this project: Use gimp to edit picture and fit to the framwork and call the getinstance to the picture.
+
+Problems that I had in completing this project: two-way-sprite.h and two-way-sprite.cpp. I find it hard to implement and algorthm. however, Dr.Malloy explain do this image flip during in class. so I findout how to do it after that.
