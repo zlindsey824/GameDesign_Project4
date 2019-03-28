@@ -1,0 +1,37 @@
+Name: Shu Zhu
+	Noah Williams
+	Zeandre Lindsey
+
+Course: CPSC 4160
+
+Clemson Email Address: nwilli9@g.clemson.edu
+			zlindse@g.clemson.edu
+			slzhu@g.clemson.edu
+
+Project no: #4
+
+Project due date: 3/29/19
+
+Project description: Adding a player object with controls to move the player with the
+			WASD command buttons. Adding a HUD to the overall game that
+			can be activated and deactivated by pressing F1. Adding 
+			collision detection and AI to the game. 
+
+The easiest part of this project: The project has become easier due to the project being 
+					split into groups. 
+
+Problems that we had in completing this project: Shu had a problem with remembering how to 
+						draw the rectangle for the HUD, specifically
+						when making the rectangle transparent. 
+						Zeandre had a few problems remembering
+						how to update github and combining all of
+						our work. Noah had problems with figuring 
+						out how to flip the sprites when changing
+						the direction of the player.  
+
+Distribution of workload: Shu was in charge of making the HUD display and fixing the F1 controls.
+			  Zeandre was in charge of implementing the collision detection. 
+			  Noah was in charge of implementing the WASD controls for the player. 
+
+A few sentences describing my proposed project: It's a game that you control a helicopter
+						and you shoot balloons. Sounds fun eh?
