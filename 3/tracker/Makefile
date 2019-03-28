@@ -10,6 +10,7 @@ OBJS = \
 	ioMod.o \
 	parseXML.o \
 	gameData.o \
+	hud.o \
 	viewport.o \
 	world.o \
 	spriteSheet.o \

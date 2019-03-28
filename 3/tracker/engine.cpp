@@ -12,6 +12,7 @@
 #include "twoWayMultiSprite.h"
 
 
+
 Engine::~Engine() {
   std::vector<Drawable*> :: const_iterator it = sprites.begin();
   while(it != sprites.end())
@@ -40,6 +41,7 @@ Engine::Engine() :
   sprites(0),
   currentSprite(0),
   makeVideo( false )
+
 {
  sprites.reserve(7);
  MultiSprite* balloon = new MultiSprite("Balloon");
@@ -83,6 +85,26 @@ void Engine::draw() const {
   //grumpbird->draw();
   //helicopter->draw();
   //4. Task 4: add fps information on screen
+
+ SDL_Rect rect;
+ rect.x = 15;
+ rect.y = 15;
+ rect.w = 250;
+ rect.h = 150;
+ //this is small hud that display F1 HUD and FPS and Name
+ SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
+ // Now set the color for the hud:
+ SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255/2 );
+ // Render rect
+ SDL_RenderFillRect( renderer, &rect );
+ // Now set the color for the outline of the hud:
+ SDL_SetRenderDrawColor( renderer, 255, 0, 0, 255/2 );
+ SDL_RenderDrawRect( renderer, &rect );
+
+  io.writeText("Press F1 for HUD", 30, 90);
+
+
+
   std::stringstream string_fps;
   SDL_Color fpsColor = {229, 54, 49,0};
   string_fps << "FPS: " << clock.getFps();
@@ -141,6 +163,14 @@ void Engine::play() {
         if (keystate[SDL_SCANCODE_ESCAPE] || keystate[SDL_SCANCODE_Q]) {
           done = true;
           break;
+        }
+        if (keystate[SDL_SCANCODE_F1]) {
+          if (clock.isPaused())
+            clock.unpause();
+          else {
+            clock.pause();
+            Hud::getInstance().display(renderer);
+          }
         }
         if ( keystate[SDL_SCANCODE_P] ) {
           if ( clock.isPaused() ) clock.unpause();

@@ -5,6 +5,7 @@
 #include "clock.h"
 #include "world.h"
 #include "viewport.h"
+#include "hud.h"
 
 class Engine {
 public:
@@ -36,6 +37,7 @@ private:
   int currentSprite;
 
   bool makeVideo;
+
 
   void draw() const;
   void update(Uint32);
