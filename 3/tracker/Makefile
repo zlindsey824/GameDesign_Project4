@@ -8,6 +8,7 @@ LDFLAGS = `sdl2-config --libs` -lm -lexpat -lSDL2_ttf -lSDL2_image
 OBJS = \
   renderContext.o \
 	ioMod.o \
+  	player.o \
 	parseXML.o \
 	gameData.o \
 	viewport.o \
@@ -22,7 +23,7 @@ OBJS = \
 	vector2f.o \
 	clock.o \
 	engine.o \
-	main.o
+	main.o 
 EXEC = run
 
 %.o: %.cpp %.h

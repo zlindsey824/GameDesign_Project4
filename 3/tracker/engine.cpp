@@ -10,7 +10,7 @@
 #include "engine.h"
 #include "frameGenerator.h"
 #include "twoWayMultiSprite.h"
-
+#include "player.h"
 
 Engine::~Engine() {
   std::vector<Drawable*> :: const_iterator it = sprites.begin();
@@ -30,13 +30,7 @@ Engine::Engine() :
   cloud("cloud", Gamedata::getInstance().getXmlInt("cloud/factor")),
   rainbow("rainbow", Gamedata::getInstance().getXmlInt("rainbow/factor")),
   viewport( Viewport::getInstance() ),
-  //star(new Sprite("YellowStar")),
-  //bluebird(new twoWayMultiSprite("Bluebird")),
-  //flyinsect(new twoWayMultiSprite("Flyinsect")),
-  //flappybird(new twoWayMultiSprite("Flappybird")),
-  //ballon(new MultiSprite("Balloon")),
-  //grumpbird(new twoWayMultiSprite("Grumpbird")),
-  //helicopter(new twoWayMultiSprite("Helicopter")),
+  player(new Player("Helicopter")),
   sprites(0),
   currentSprite(0),
   makeVideo( false )
@@ -48,16 +42,16 @@ Engine::Engine() :
  twoWayMultiSprite* flyinsect = new twoWayMultiSprite("Flyinsect");
  twoWayMultiSprite* flappybird = new twoWayMultiSprite("Flappybird");
  twoWayMultiSprite* grumpbird = new twoWayMultiSprite("Grumpbird");
- twoWayMultiSprite* helicopter = new twoWayMultiSprite("Helicopter");
+ //twoWayMultiSprite* helicopter = new twoWayMultiSprite("Helicopter");
 
- Viewport::getInstance().setObjectToTrack(bluebird);
+ Viewport::getInstance().setObjectToTrack(player);
  sprites.emplace_back(balloon);
  sprites.emplace_back(balloon1);
  sprites.emplace_back(bluebird);
  sprites.emplace_back(flyinsect);
  sprites.emplace_back(flappybird);
  sprites.emplace_back(grumpbird);
- sprites.emplace_back(helicopter);
+ //sprites.emplace_back(helicopter);
   //star->setScale(1.5);
   //Viewport::getInstance().setObjectToTrack(star);
   std::cout << "Loading complete" << std::endl;
@@ -69,6 +63,7 @@ void Engine::draw() const {
   cloud.draw();
   rainbow.draw();
 
+  player->draw();
   std::vector<Drawable*> :: const_iterator it = sprites.begin();
   while(it != sprites.end())
   {
@@ -100,16 +95,10 @@ void Engine::draw() const {
 }
 
 void Engine::update(Uint32 ticks) {
-  //star-> update(ticks);
-  //bluebird-> update(ticks);
-  //flyinsect-> update(ticks);
-  //flappybird -> update(ticks);
-  //ballon -> update(ticks);
-  //grumpbird -> update(ticks);
-  //helicopter -> update(ticks);
   cloud.update();
   rainbow.update();
 
+  player->update(ticks);
   std::vector<Drawable*> :: const_iterator it = sprites.begin();
   while(it != sprites.end())
   {
@@ -164,6 +153,18 @@ void Engine::play() {
     ticks = clock.getElapsedTicks();
     if ( ticks > 0 ) {
       clock.incrFrame();
+      if (keystate[SDL_SCANCODE_A]) {
+        static_cast<Player*>(player)->left();
+      }
+      if (keystate[SDL_SCANCODE_D]) {
+        static_cast<Player*>(player)->right();
+      }
+      if (keystate[SDL_SCANCODE_W]) {
+        static_cast<Player*>(player)->up();
+      }
+      if (keystate[SDL_SCANCODE_S]) {
+        static_cast<Player*>(player)->down();
+      }
       draw();
       update(ticks);
       if ( makeVideo ) {

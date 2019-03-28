@@ -6,6 +6,8 @@
 #include "world.h"
 #include "viewport.h"
 
+class Player;
+
 class Engine {
 public:
   Engine ();
@@ -25,14 +27,8 @@ private:
   World rainbow;
   Viewport& viewport;
 
+  Player* player;
   std::vector <Drawable*> sprites;
-  //Drawable* star;
-  //Drawable* bluebird;
-  //Drawable* flyinsect;
-  //Drawable* flappybird;
-  //Drawable* ballon;
-  //Drawable* grumpbird;
-  //Drawable* helicopter;
   int currentSprite;
 
   bool makeVideo;

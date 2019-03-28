@@ -45,6 +45,26 @@
   <alpha>0</alpha>
 </font>
 
+<Helicopter>
+  <file>assets/helicopter.png</file>
+  <startLoc x="50" y="140"/>
+  <frames>8</frames>
+  <frameInterval>80</frameInterval>
+  <speedX>300</speedX>
+  <speedY>200</speedY>
+  <transparency>false</transparency>
+</Helicopter>
+
+<HelicopterLeft>
+  <file>assets/helicopterLeft.png</file>
+  <startLoc x="50" y="140"/>
+  <frames>8</frames>
+  <frameInterval>80</frameInterval>
+  <speedX>300</speedX>
+  <speedY>200</speedY>
+  <transparency>false</transparency>
+</HelicopterLeft>
+
 <Bluebird>
   <file>assets/bluebird.png</file>
   <startLoc x="50" y="140"/>
@@ -52,7 +72,7 @@
   <frameInterval>50</frameInterval>
   <speedX>200</speedX>
   <speedY>200</speedY>
-  <transparency>false</transparency>
+  <transparency>true</transparency>
 </Bluebird>
 
 <Flyinsect>
@@ -94,19 +114,6 @@
   <speedY>200</speedY>
   <transparency>true</transparency>
 </Grumpbird>
-
-<Helicopter>
-  <file>assets/helicopter.png</file>
-  <startLoc x="50" y="140"/>
-  <frames>8</frames>
-  <frameInterval>80</frameInterval>
-  <speedX>300</speedX>
-  <speedY>200</speedY>
-  <transparency>true</transparency>
-</Helicopter>
-
-
-
 
 
 </GameData>
