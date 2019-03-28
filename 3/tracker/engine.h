@@ -7,7 +7,7 @@
 #include "viewport.h"
 #include "hud.h"
 
-class Player;
+//class Player;
 
 class CollisionStrategy;
 class SmartSprite;
@@ -18,7 +18,6 @@ public:
   Engine ();
   ~Engine ();
   void play();
-  //void switchSprite();
   Engine(const Engine&) = delete;
   Engine& operator=(const Engine&) = delete;
 
@@ -31,11 +30,7 @@ private:
   World cloud;
   World rainbow;
   Viewport& viewport;
-
-  Player* player;
-  //int currentSprite;
-
-  SubjectSprite* subjectPlayer;
+  SubjectSprite* player;
   std::vector<SmartSprite*> sprites;
   std::vector<CollisionStrategy*> strategies;
   int currentStrategy;

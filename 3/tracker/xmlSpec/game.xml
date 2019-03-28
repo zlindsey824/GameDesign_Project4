@@ -2,15 +2,15 @@
 <GameData>
 <!-- screenTitle is also used to identify you and your animation.
      So make sure to include your name as part of the screenTitle -->
-<title>Shu Le Zhu</title>
+<title>SNZ</title>
 <maxStringSize>50</maxStringSize>
 
 <frameCapOn>true</frameCapOn>
 <period>17</period>
 
-<maxFrames>300</maxFrames>
-<username>slzhu</username>
-<myname>Shu Le Zhu</myname>
+<maxFrames>1200</maxFrames>
+<username>slzhu,nwilli9,zlindse</username>
+<myname>Shu Le Zhu, Noah Williams, Zeandre Lindsey</myname>
 
 <numberOfBalloons>25</numberOfBalloons>
 
@@ -108,7 +108,7 @@
   <startLoc x="200" y="100"/>
   <frames>4</frames>
   <frameInterval>50</frameInterval>
-  <speedX>300</speedX>
+  <speedX>400</speedX>
   <speedY>300</speedY>
   <safeDistance>75</safeDistance>
   <transparency>true</transparency>

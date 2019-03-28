@@ -13,20 +13,13 @@
 #include "frameGenerator.h"
 #include "twoWayMultiSprite.h"
 #include "collisionStrategy.h"
-#include "player.h"
+//#include "player.h"
 
 const SDL_Color yellow = {255, 255, 0, 255};
 
 Engine::~Engine() {
 
-	/*
-  std::vector<Drawable*> :: const_iterator it = sprites.begin();
-  while(it != sprites.end())
-  {
-    delete *it;
-    it++;
-  }
-  */
+
   delete player;
   for ( Drawable* sprite : sprites ) {
     delete sprite;
@@ -45,34 +38,14 @@ Engine::Engine() :
   cloud("cloud", Gamedata::getInstance().getXmlInt("cloud/factor")),
   rainbow("rainbow", Gamedata::getInstance().getXmlInt("rainbow/factor")),
   viewport( Viewport::getInstance() ),
-  player(new Player("Helicopter")),
-  subjectPlayer(new SubjectSprite("Helicopter")),
+  player(new SubjectSprite("Helicopter")),
   sprites(),
-  //currentSprite(0),
   strategies(),
   currentStrategy(0),
   collision(false),
   makeVideo( false )
 
 {
- /*
- MultiSprite* balloon = new MultiSprite("Balloon");
- MultiSprite* balloon1 = new MultiSprite("Balloon");
- twoWayMultiSprite* bluebird = new twoWayMultiSprite("Bluebird");
- twoWayMultiSprite* flyinsect = new twoWayMultiSprite("Flyinsect");
- twoWayMultiSprite* flappybird = new twoWayMultiSprite("Flappybird");
- twoWayMultiSprite* grumpbird = new twoWayMultiSprite("Grumpbird");
- //twoWayMultiSprite* helicopter = new twoWayMultiSprite("Helicopter");
-
- Viewport::getInstance().setObjectToTrack(player);
- sprites.emplace_back(balloon);
- sprites.emplace_back(balloon1);
- sprites.emplace_back(bluebird);
- sprites.emplace_back(flyinsect);
- sprites.emplace_back(flappybird);
- sprites.emplace_back(grumpbird);
- sprites.emplace_back(helicopter);
- */
  int n = Gamedata::getInstance().getXmlInt("numberOfBalloons");
   sprites.reserve(n);
   Vector2f pos = player->getPosition();
@@ -80,7 +53,7 @@ Engine::Engine() :
   int h = player->getScaledHeight();
   for (int i = 0; i < n; ++i) {
     sprites.push_back( new SmartSprite("Balloon", pos, w, h) );
-    subjectPlayer->attach( sprites[i] );
+    player->attach( sprites[i] );
   }
 
   strategies.push_back( new RectangularCollisionStrategy );
@@ -100,14 +73,6 @@ void Engine::draw() const {
 	for ( const Drawable* sprite : sprites ) {
     sprite->draw();
   }
-  /*s
-  std::vector<Drawable*> :: const_iterator it = sprites.begin();
-  while(it != sprites.end())
-  {
-    (*it)-> draw();
-    it++;
-  }
-  */
   //4. Task 4: add fps information on screen
 
  SDL_Rect rect;
@@ -130,7 +95,7 @@ void Engine::draw() const {
 
 
   std::stringstream string_fps;
-  SDL_Color fpsColor = {229, 54, 49,0};
+  SDL_Color fpsColor = yellow;
   string_fps << "FPS: " << clock.getFps();
   io.writeText(string_fps.str(), fpsColor, 30, 60);
 
@@ -145,11 +110,10 @@ void Engine::draw() const {
   io.writeText("Press m to change strategy", 500, 60);
   for ( const Drawable* sprite : sprites ) {
     sprite->draw();
-  subjectPlayer->draw();
   }
   std::stringstream strm;
-  strm << sprites.size() << " Smart Sprites Remaining";
-  io.writeText(strm.str(), yellow, 30, 60);
+  strm << sprites.size() << " Smart Sprites Left";
+  io.writeText(strm.str(), yellow, 30, 120);
   strategies[currentStrategy]->draw();
   if ( collision ) {
     io.writeText("Oops: Collision", 500, 90);
@@ -165,7 +129,7 @@ void Engine::checkForCollisions() {
   while ( it != sprites.end() ) {
     if ( strategies[currentStrategy]->execute(*player, **it) ) {
       SmartSprite* doa = *it;
-      subjectPlayer->detach(doa);
+      player->detach(doa);
       delete doa;
       it = sprites.erase(it);
     }
@@ -179,28 +143,12 @@ void Engine::update(Uint32 ticks) {
 
 	checkForCollisions();
   player->update(ticks);
-  subjectPlayer->update(ticks);
+  //subjectPlayer->update(ticks);
   for ( Drawable* sprite : sprites ) {
     sprite->update( ticks );
   }
-	/*
-  std::vector<Drawable*> :: const_iterator it = sprites.begin();
-  while(it != sprites.end())
-  {
-    (*it)-> update(ticks);
-    it++;
-  }
-  */
   viewport.update(); // always update viewport last
 }
-
-/*
-void Engine::switchSprite(){
-  ++currentSprite;
-  currentSprite = currentSprite % (int)sprites.size();
-  Viewport::getInstance().setObjectToTrack(sprites[currentSprite]);
-  }
-*/
 
 void Engine::play() {
   SDL_Event event;
@@ -250,16 +198,16 @@ void Engine::play() {
     if ( ticks > 0 ) {
       clock.incrFrame();
       if (keystate[SDL_SCANCODE_A]) {
-        static_cast<Player*>(player)->left();
+        static_cast<SubjectSprite*>(player)->left();
       }
       if (keystate[SDL_SCANCODE_D]) {
-        static_cast<Player*>(player)->right();
+        static_cast<SubjectSprite*>(player)->right();
       }
       if (keystate[SDL_SCANCODE_W]) {
-        static_cast<Player*>(player)->up();
+        static_cast<SubjectSprite*>(player)->up();
       }
       if (keystate[SDL_SCANCODE_S]) {
-        static_cast<Player*>(player)->down();
+        static_cast<SubjectSprite*>(player)->down();
       }
       draw();
       update(ticks);
