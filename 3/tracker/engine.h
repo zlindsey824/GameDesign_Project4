@@ -6,12 +6,16 @@
 #include "world.h"
 #include "viewport.h"
 
+class CollisionStrategy;
+class SmartSprite;
+class SubjectSprite;
+
 class Engine {
 public:
   Engine ();
   ~Engine ();
   void play();
-  void switchSprite();
+  //void switchSprite();
   Engine(const Engine&) = delete;
   Engine& operator=(const Engine&) = delete;
 
@@ -25,15 +29,13 @@ private:
   World rainbow;
   Viewport& viewport;
 
-  std::vector <Drawable*> sprites;
-  //Drawable* star;
-  //Drawable* bluebird;
-  //Drawable* flyinsect;
-  //Drawable* flappybird;
-  //Drawable* ballon;
-  //Drawable* grumpbird;
-  //Drawable* helicopter;
-  int currentSprite;
+  //int currentSprite;
+
+  SubjectSprite* player;
+  std::vector<SmartSprite*> sprites;
+  std::vector<CollisionStrategy*> strategies;
+  int currentStrategy;
+  bool collision;
 
   bool makeVideo;
 

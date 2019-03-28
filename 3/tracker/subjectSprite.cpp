@@ -1,6 +1,6 @@
 #include "subjectSprite.h"
 #include "smartSprite.h"
-#include "gamedata.h"
+#include "gameData.h"
 #include "renderContext.h"
 
 SubjectSprite::SubjectSprite( const std::string& name) :

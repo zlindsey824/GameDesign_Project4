@@ -2,7 +2,7 @@
 #include <random>
 #include <functional>
 #include "smartSprite.h"
-#include "gamedata.h"
+#include "gameData.h"
 #include "renderContext.h"
 
 float distance(float x1, float y1, float x2, float y2) {
@@ -19,7 +19,7 @@ void SmartSprite::goDown()  { setVelocityY( fabs(getVelocityY()) );  }
 
 SmartSprite::SmartSprite(const std::string& name, const Vector2f& pos, 
   int w, int h) :
-  Sprite(name),
+  MultiSprite(name),
   playerPos(pos),
   playerWidth(w),
   playerHeight(h),
@@ -29,7 +29,7 @@ SmartSprite::SmartSprite(const std::string& name, const Vector2f& pos,
 
 
 SmartSprite::SmartSprite(const SmartSprite& s) : 
-  Sprite(s),
+  MultiSprite(s),
   playerPos(s.playerPos),
   playerWidth(s.playerWidth),
   playerHeight(s.playerHeight),
@@ -38,7 +38,7 @@ SmartSprite::SmartSprite(const SmartSprite& s) :
 {}
 
 void SmartSprite::update(Uint32 ticks) { 
-  Sprite::update(ticks);
+  MultiSprite::update(ticks);
   float x= getX()+getImage()->getWidth()/2;
   float y= getY()+getImage()->getHeight()/2;
   float ex= playerPos[0]+playerWidth/2;
