@@ -23,6 +23,12 @@
   <height>1078</height>
 </world>
 
+<hud>
+  <x>300</x>
+  <y>100</y>
+  <w>400</w>
+  <h>300</h>
+</hud>
 
 <rainbow>
   <file>assets/rainbow.png</file>
