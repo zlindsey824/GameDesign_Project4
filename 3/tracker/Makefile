@@ -24,7 +24,10 @@ OBJS = \
 	vector2f.o \
 	clock.o \
 	engine.o \
-	main.o 
+	subjectSprite.o \
+	smartSprite.o \
+	collisionStrategy.o \
+	main.o
 EXEC = run
 
 %.o: %.cpp %.h

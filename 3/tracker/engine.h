@@ -9,12 +9,16 @@
 
 class Player;
 
+class CollisionStrategy;
+class SmartSprite;
+class SubjectSprite;
+
 class Engine {
 public:
   Engine ();
   ~Engine ();
   void play();
-  void switchSprite();
+  //void switchSprite();
   Engine(const Engine&) = delete;
   Engine& operator=(const Engine&) = delete;
 
@@ -29,8 +33,13 @@ private:
   Viewport& viewport;
 
   Player* player;
-  std::vector <Drawable*> sprites;
-  int currentSprite;
+  //int currentSprite;
+
+  SubjectSprite* subjectPlayer;
+  std::vector<SmartSprite*> sprites;
+  std::vector<CollisionStrategy*> strategies;
+  int currentStrategy;
+  bool collision;
 
   bool makeVideo;
 

@@ -4,21 +4,35 @@
 #include <string>
 #include <random>
 #include <iomanip>
+#include "smartSprite.h"
+#include "subjectSprite.h"
 #include "sprite.h"
 #include "multisprite.h"
 #include "gameData.h"
 #include "engine.h"
 #include "frameGenerator.h"
 #include "twoWayMultiSprite.h"
+#include "collisionStrategy.h"
 #include "player.h"
 
+const SDL_Color yellow = {255, 255, 0, 255};
 
 Engine::~Engine() {
+
+	/*
   std::vector<Drawable*> :: const_iterator it = sprites.begin();
   while(it != sprites.end())
   {
     delete *it;
     it++;
+  }
+  */
+  delete player;
+  for ( Drawable* sprite : sprites ) {
+    delete sprite;
+  }
+  for ( CollisionStrategy* strategy : strategies ) {
+    delete strategy;
   }
   std::cout << "Terminating program" << std::endl;
 }
@@ -32,12 +46,16 @@ Engine::Engine() :
   rainbow("rainbow", Gamedata::getInstance().getXmlInt("rainbow/factor")),
   viewport( Viewport::getInstance() ),
   player(new Player("Helicopter")),
-  sprites(0),
-  currentSprite(0),
+  subjectPlayer(new SubjectSprite("Helicopter")),
+  sprites(),
+  //currentSprite(0),
+  strategies(),
+  currentStrategy(0),
+  collision(false),
   makeVideo( false )
 
 {
- sprites.reserve(7);
+ /*
  MultiSprite* balloon = new MultiSprite("Balloon");
  MultiSprite* balloon1 = new MultiSprite("Balloon");
  twoWayMultiSprite* bluebird = new twoWayMultiSprite("Bluebird");
@@ -53,9 +71,24 @@ Engine::Engine() :
  sprites.emplace_back(flyinsect);
  sprites.emplace_back(flappybird);
  sprites.emplace_back(grumpbird);
- //sprites.emplace_back(helicopter);
+ sprites.emplace_back(helicopter);
+ */
+ int n = Gamedata::getInstance().getXmlInt("numberOfBalloons");
+  sprites.reserve(n);
+  Vector2f pos = player->getPosition();
+  int w = player->getScaledWidth();
+  int h = player->getScaledHeight();
+  for (int i = 0; i < n; ++i) {
+    sprites.push_back( new SmartSprite("Balloon", pos, w, h) );
+    subjectPlayer->attach( sprites[i] );
+  }
+
+  strategies.push_back( new RectangularCollisionStrategy );
+  strategies.push_back( new PerPixelCollisionStrategy );
+  strategies.push_back( new MidPointCollisionStrategy );
+
   //star->setScale(1.5);
-  //Viewport::getInstance().setObjectToTrack(star);
+  Viewport::getInstance().setObjectToTrack(player);
   std::cout << "Loading complete" << std::endl;
 }
 
@@ -64,21 +97,17 @@ void Engine::draw() const {
   //world.draw();
   cloud.draw();
   rainbow.draw();
-
-  player->draw();
+	for ( const Drawable* sprite : sprites ) {
+    sprite->draw();
+  }
+  /*s
   std::vector<Drawable*> :: const_iterator it = sprites.begin();
   while(it != sprites.end())
   {
     (*it)-> draw();
     it++;
   }
-  //star->draw();
-  //bluebird->draw();
-  //flyinsect->draw();
-  //flappybird->draw();
-  //ballon->draw();
-  //grumpbird->draw();
-  //helicopter->draw();
+  */
   //4. Task 4: add fps information on screen
 
  SDL_Rect rect;
@@ -112,29 +141,66 @@ void Engine::draw() const {
   int name_loc_x = 20;
   int name_loc_y = 420;
   io.writeText(string_name.str(), nameColor, name_loc_x, name_loc_y);
+
+  io.writeText("Press m to change strategy", 500, 60);
+  for ( const Drawable* sprite : sprites ) {
+    sprite->draw();
+  subjectPlayer->draw();
+  }
+  std::stringstream strm;
+  strm << sprites.size() << " Smart Sprites Remaining";
+  io.writeText(strm.str(), yellow, 30, 60);
+  strategies[currentStrategy]->draw();
+  if ( collision ) {
+    io.writeText("Oops: Collision", 500, 90);
+  }
+  player->draw();
+
   viewport.draw();
   SDL_RenderPresent(renderer);
+}
+
+void Engine::checkForCollisions() {
+  auto it = sprites.begin();
+  while ( it != sprites.end() ) {
+    if ( strategies[currentStrategy]->execute(*player, **it) ) {
+      SmartSprite* doa = *it;
+      subjectPlayer->detach(doa);
+      delete doa;
+      it = sprites.erase(it);
+    }
+    else ++it;
+  }
 }
 
 void Engine::update(Uint32 ticks) {
   cloud.update();
   rainbow.update();
 
+	checkForCollisions();
   player->update(ticks);
+  subjectPlayer->update(ticks);
+  for ( Drawable* sprite : sprites ) {
+    sprite->update( ticks );
+  }
+	/*
   std::vector<Drawable*> :: const_iterator it = sprites.begin();
   while(it != sprites.end())
   {
     (*it)-> update(ticks);
     it++;
   }
+  */
   viewport.update(); // always update viewport last
 }
 
+/*
 void Engine::switchSprite(){
   ++currentSprite;
   currentSprite = currentSprite % (int)sprites.size();
   Viewport::getInstance().setObjectToTrack(sprites[currentSprite]);
   }
+*/
 
 void Engine::play() {
   SDL_Event event;
@@ -165,8 +231,8 @@ void Engine::play() {
           if ( clock.isPaused() ) clock.unpause();
           else clock.pause();
         }
-        if ( keystate[SDL_SCANCODE_T] ) {
-          switchSprite();
+        if ( keystate[SDL_SCANCODE_M] ) {
+          currentStrategy = (1 + currentStrategy) % strategies.size();
         }
         if (keystate[SDL_SCANCODE_F4] && !makeVideo) {
           std::cout << "Initiating frame capture" << std::endl;
@@ -179,7 +245,7 @@ void Engine::play() {
       }
     }
 
-    // In this section of the event loop we allow key bounce:
+    // In this section of the ev  player->draw();ent loop we allow key bounce:
     ticks = clock.getElapsedTicks();
     if ( ticks > 0 ) {
       clock.incrFrame();
